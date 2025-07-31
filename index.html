@@ -68,7 +68,7 @@
       box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     }
 
-    /* 🎉 Mensaje mejorado visualmente */
+    /* 🎉 Mensaje centrado y visible */
     #mensaje {
       position: fixed;
       top: 50%;
@@ -81,27 +81,37 @@
       opacity: 0;
       transition: opacity 2s ease;
       z-index: 3;
-      background-color: rgba(255, 255, 255, 0.95); /* más sólido */
+      background-color: rgba(255, 255, 255, 0.95);
       padding: 20px 30px;
       border-radius: 15px;
       box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
       border: 2px solid #006400;
     }
 
+    /* 🎊 Confeti mejorado */
     .confeti {
       position: fixed;
+      top: -10px;
       opacity: 0.9;
-      animation: caerConfeti linear forwards;
       z-index: 1;
+      pointer-events: none;
+      animation-name: caerConfeti;
+      animation-timing-function: ease-in-out;
+      animation-fill-mode: forwards;
     }
 
     @keyframes caerConfeti {
-      to {
-        transform: translateY(100vh) rotateZ(360deg);
+      0% {
+        transform: translateY(-10px) rotateZ(0deg) rotateX(0deg);
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(110vh) translateX(var(--desplazarX)) rotateZ(360deg) rotateX(360deg);
         opacity: 0;
       }
     }
 
+    /* 📱 Responsive */
     @media (max-width: 600px) {
       h1 {
         font-size: 20px;
@@ -171,7 +181,6 @@
     function mostrarMensaje() {
       const mensaje = document.getElementById("mensaje");
       mensaje.style.opacity = 1;
-
       setTimeout(() => {
         mensaje.style.opacity = 0;
       }, 5000);
@@ -182,27 +191,34 @@
         const confeti = document.createElement("div");
         confeti.classList.add("confeti");
 
-        const size = Math.random() * 10 + 5;
+        const size = Math.random() * 10 + 6;
         const left = Math.random() * window.innerWidth;
+        const color = `hsl(${Math.random() * 360}, 100%, 60%)`;
+        const shape = Math.random() > 0.5 ? "50%" : "0";
         const duration = Math.random() * 3 + 3;
-        const color = `hsl(${Math.random() * 360}, 100%, 50%)`;
+        const delay = Math.random() * 0.5;
+        const desplazamientoX = `${Math.random() * 100 - 50}px`;
 
         confeti.style.width = `${size}px`;
         confeti.style.height = `${size}px`;
         confeti.style.left = `${left}px`;
-        confeti.style.top = `-20px`;
         confeti.style.backgroundColor = color;
-        confeti.style.borderRadius = Math.random() > 0.5 ? "50%" : "0";
+        confeti.style.borderRadius = shape;
         confeti.style.animationDuration = `${duration}s`;
+        confeti.style.animationDelay = `${delay}s`;
+        confeti.style.setProperty('--desplazarX', desplazamientoX);
 
         document.body.appendChild(confeti);
 
         setTimeout(() => {
           confeti.remove();
-        }, duration * 1000);
+        }, (duration + delay) * 1000);
       }
     }
   </script>
+</body>
+</html>
+
 </body>
 </html>
 
