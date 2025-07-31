@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Concesionario Audi</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      background-image: url('concesionario.jpg');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      font-family: Arial, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    .contenedor {
+      background-color: rgba(255, 255, 255, 0.9);
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+      text-align: center;
+      width: 100%;
+      max-width: 700px;
+      margin: 20px;
+      z-index: 2;
+    }
+
+    h1 {
+      font-size: 24px;
+    }
+
+    button {
+      margin: 10px 6px;
+      padding: 12px 18px;
+      font-size: 16px;
+      border: none;
+      border-radius: 6px;
+      background-color: #222;
+      color: white;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #444;
+    }
+
+    #modelo-info {
+      margin-top: 20px;
+    }
+
+    #modelo-info img {
+      margin-top: 10px;
+      width: 100%;
+      max-width: 400px;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    #mensaje {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 24px;
+      color: #006400;
+      font-weight: bold;
+      text-align: center;
+      opacity: 0;
+      transition: opacity 2s ease;
+      z-index: 3;
+      background-color: rgba(255, 255, 255, 0.85);
+      padding: 15px 25px;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    }
+
+    .confeti {
+      position: fixed;
+      opacity: 0.9;
+      animation: caerConfeti linear forwards;
+      z-index: 1;
+    }
+
+    @keyframes caerConfeti {
+      to {
+        transform: translateY(100vh) rotateZ(360deg);
+        opacity: 0;
+      }
+    }
+
+    /* 📱 Estilos para móviles */
+    @media (max-width: 600px) {
+      h1 {
+        font-size: 20px;
+      }
+
+      button {
+        display: block;
+        width: 100%;
+        margin: 10px 0;
+      }
+
+      #mensaje {
+        font-size: 20px;
+        width: 90%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="contenedor">
+    <h1>Concesionario Audi</h1>
+    <p>Selecciona un modelo para ver su imagen y descripción:</p>
+
+    <div>
+      <button onclick="mostrarModelo('a3')">Audi A3</button>
+      <button onclick="mostrarModelo('a4')">Audi A4</button>
+      <button onclick="mostrarModelo('q7')">Audi Q7</button>
+    </div>
+
+    <div id="modelo-info"></div>
+  </div>
+
+  <div id="mensaje">¡Enhorabuena por tu nuevo coche, te lo ha regalado Jaime!</div>
+
+  <script>
+    function mostrarModelo(modelo) {
+      const modelos = {
+        a3: {
+          nombre: "Audi A3",
+          descripcion: "Compacto, deportivo y elegante.",
+          imagen: "audi_a3.jpg"
+        },
+        a4: {
+          nombre: "Audi A4",
+          descripcion: "Sedán clásico con tecnología avanzada.",
+          imagen: "audi_a4.jpg"
+        },
+        q7: {
+          nombre: "Audi Q7",
+          descripcion: "SUV de lujo con espacio y potencia.",
+          imagen: "audi_q7.jpg"
+        }
+      };
+
+      const datos = modelos[modelo];
+      const contenedor = document.getElementById("modelo-info");
+      contenedor.innerHTML = `
+        <h3>${datos.nombre}</h3>
+        <p>${datos.descripcion}</p>
+        <img src="${datos.imagen}" alt="${datos.nombre}">
+      `;
+
+      mostrarMensaje();
+      lanzarConfeti();
+    }
+
+    function mostrarMensaje() {
+      const mensaje = document.getElementById("mensaje");
+      mensaje.style.opacity = 1;
+
+      setTimeout(() => {
+        mensaje.style.opacity = 0;
+      }, 5000);
+    }
+
+    function lanzarConfeti() {
+      for (let i = 0; i < 100; i++) {
+        const confeti = document.createElement("div");
+        confeti.classList.add("confeti");
+
+        const size = Math.random() * 10 + 5;
+        const left = Math.random() * window.innerWidth;
+        const duration = Math.random() * 3 + 3;
+        const color = `hsl(${Math.random() * 360}, 100%, 50%)`;
+
+        confeti.style.width = `${size}px`;
+        confeti.style.height = `${size}px`;
+        confeti.style.left = `${left}px`;
+        confeti.style.top = `-20px`;
+        confeti.style.backgroundColor = color;
+        confeti.style.borderRadius = Math.random() > 0.5 ? "50%" : "0";
+        confeti.style.animationDuration = `${duration}s`;
+
+        document.body.appendChild(confeti);
+
+        setTimeout(() => {
+          confeti.remove();
+        }, duration * 1000);
+      }
+    }
+  </script>
+</body>
+</html>
